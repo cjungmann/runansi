@@ -1,0 +1,49 @@
+#!/bin/bash
+# -*- mode:makefile -*-
+
+output=Makefile
+
+>${output}
+
+(cat << 'EOF'
+COMPILE_FLAGS=-fPIC -std=c++11 -Wall -Werror -Weffc++ -pedantic -ggdb -D _DEBUG
+CXX = g++
+
+ifndef PREFIX
+	PREFIX := /usr/local
+endif
+
+all: librunansi.so.0.1 ratest
+
+ratest: ratest.cpp llines.o librunansi.so.0.1
+	$(CXX) $(COMPILE_FLAGS) -L. -o ratest ratest.cpp llines.o -Wl,-R -Wl,. -lrunansi
+
+librunansi.so.0.1 : runansi.o llines.o
+	$(CXX) -shared -o librunansi.so.0.1 runansi.o llines.o
+	ln -sf librunansi.so.0.1 librunansi.so
+
+runansi.o: runansi.cpp runansi.hpp
+	$(CXX) $(COMPILE_FLAGS) -c -o runansi.o runansi.cpp
+
+llines.o: llines.cpp llines.hpp
+	$(CXX) $(COMPILE_FLAGS) -c -o llines.o llines.cpp
+
+install:
+	install -d $(PREFIX)/lib
+	install -m 644 librunansi.so* $(PREFIX)/lib
+	install -d $(PREFIX)/include
+	install -m 644 mysqlcb_binder.hpp $(PREFIX)/include
+	install -m 644 mysqlcb.hpp $(PREFIX)/include
+	ln -sf librunansi.so.0.1 librunansi.so
+	ldconfig $(PREFIX)
+
+uninstall:
+	delete -f $(PREFIX)/lib/librunansi.so*
+
+clean:
+	rm -f *.o librunansi.so*
+
+EOF
+) >> ${output}
+
+
