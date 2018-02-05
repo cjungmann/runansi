@@ -1,6 +1,7 @@
 #ifndef RUNANSI_HPP_SOURCE
 #define RUNANSI_HPP_SOURCE
 
+#include <signal.h>
 #include <stdint.h>  // for uint32_t
 #include "llines.hpp"
 
@@ -18,6 +19,15 @@ typedef uint32_t scrsize;
 scrsize get_screen_size(void);
 inline uint32_t row_count(scrsize val) { return val / (SCRINT_MULTIPLIER); }
 inline uint32_t col_count(scrsize val) { return val % (SCRINT_MULTIPLIER); }
+
+void start_resize_handler(void);
+
+
+/**
+ * Gets the screen size to determine the number of lines to print and
+ * which line should be the top line.
+ */
+void adjust_pli_to_screen(pl_info &pli);
 
 /**
  * Returns true if solitary ESC, false otherwise.
