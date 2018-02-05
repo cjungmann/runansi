@@ -20,12 +20,13 @@ int count_lines(const llines *ll)
    return 0;
 }
 
-void init(pl_info &pli, const llines *ll, int max_to_print=0)
+void init(pl_info &pli, const llines *ll, int sum_top_bottom_margins=0)
 {
+   pli.lines_in_list = count_lines(ll);
+   pli.sum_top_bottom_margins=sum_top_bottom_margins;
    pli.top_to_print = 1;
-   pli.max_to_print = (max_to_print ? max_to_print : 9999);
    pli.highlight = 1;
-   pli.line_count = count_lines(ll);
+   pli.max_to_print = 0;   // should be calculated each time in case the screen size has changed
 }
 
 void make_llines(ILines_Callback &cb, ...)
@@ -85,10 +86,10 @@ const llines* print_lines(const llines *ll, const pl_info *pli)
    int count = 0;
    while (ptr && count<max_to_print)
    {
-      ++count;
-
       if (ptr->position >= top_to_print)
       {
+         ++count;
+
          if (ptr->position==highlight)
          {
             std::cout << HL_ON;

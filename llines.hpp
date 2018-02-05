@@ -52,13 +52,14 @@ void make_llines(ILines_Callback &cb, ...);
 /** Print Lines (pl) Info **/
 struct pl_info
 {
+   int lines_in_list;
+   int sum_top_bottom_margins;
+   int highlight;
    int top_to_print;
    int max_to_print;
-   int highlight;
-   int line_count;   // this value is not used to print, but only to judge moving highlight elsewhere.
 };
 
-void init(pl_info &pli, const llines *ll, int max_to_print);
+void init(pl_info &pli, const llines *ll, int sum_top_bottom_margins);
 
 /** Returns highlighted line. **/
 const llines* print_lines(const llines *ll, const pl_info *pli = nullptr);
