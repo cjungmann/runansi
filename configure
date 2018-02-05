@@ -15,8 +15,8 @@ endif
 
 all: librunansi.so.0.1 ratest
 
-ratest: ratest.cpp llines.o librunansi.so.0.1
-	$(CXX) $(COMPILE_FLAGS) -L. -o ratest ratest.cpp llines.o -Wl,-R -Wl,. -lrunansi
+ratest: ratest.cpp librunansi.so.0.1
+	$(CXX) $(COMPILE_FLAGS) -L. -o ratest ratest.cpp -Wl,-R -Wl,. -lrunansi
 
 librunansi.so.0.1 : runansi.o llines.o
 	$(CXX) -shared -o librunansi.so.0.1 runansi.o llines.o
@@ -42,6 +42,7 @@ uninstall:
 
 clean:
 	rm -f *.o librunansi.so*
+	rm -f ratest
 
 EOF
 ) >> ${output}
