@@ -4,9 +4,9 @@
 
 int main(int argc, char **argv)
 {
-   auto f = [](const llines *ll)
+   auto f = [](const LLines *ll)
    {
-      const llines *llsel = select_line(ll,2);
+      const LLines *llsel = select_line(ll,2);
       if (llsel)
          std::cout << "\n\nYou selected \"" << llsel->line << "\"\n";
    };
@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 
    start_resize_handler();
 
-   make_llines(lu,
+   make_LLines(lu,
                "This is the first line",
                "This is the second line",
                "This is the third line",

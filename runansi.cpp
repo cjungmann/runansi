@@ -202,13 +202,13 @@ bool adjust_pl_info(pl_info &pli, const char *keyp)
  * The function returns a pointer to the selected line when ENTER is pressed,
  * or nullptr if ESCAPE is pressed.
  */
-const llines *select_line(const llines *ll, int highlight)
+const LLines *select_line(const LLines *ll, int highlight)
 {
    pl_info pli;
    init(pli, ll, 8);
    adjust_pli_to_screen(pli);
 
-   const llines *selected = nullptr;
+   const LLines *selected = nullptr;
    const char *ptr = nullptr;
 
    char buff[10];

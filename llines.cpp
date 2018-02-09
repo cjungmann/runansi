@@ -10,7 +10,7 @@
 
 
 
-int count_lines(const llines *ll)
+int count_lines(const LLines *ll)
 {
    while (ll)
    {
@@ -23,7 +23,7 @@ int count_lines(const llines *ll)
    return 0;
 }
 
-void init(pl_info &pli, const llines *ll, int sum_top_bottom_margins=0)
+void init(pl_info &pli, const LLines *ll, int sum_top_bottom_margins=0)
 {
    pli.lines_in_list = count_lines(ll);
    pli.sum_top_bottom_margins=sum_top_bottom_margins;
@@ -32,9 +32,9 @@ void init(pl_info &pli, const llines *ll, int sum_top_bottom_margins=0)
    pli.max_to_print = 0;   // should be calculated each time in case the screen size has changed
 }
 
-void make_llines(ILines_Callback &cb, ...)
+void make_LLines(ILines_Callback &cb, ...)
 {
-   llines *head=nullptr, *tail=nullptr;
+   LLines *head=nullptr, *tail=nullptr;
 
    va_list clines;
    va_start(clines, cb);
@@ -42,7 +42,7 @@ void make_llines(ILines_Callback &cb, ...)
    const char *val;
    while((val=va_arg(clines,const char*)))
    {
-      llines *ptr = static_cast<llines*>(alloca(sizeof(llines)));
+      LLines *ptr = static_cast<LLines*>(alloca(sizeof(LLines)));
       ptr->next = nullptr;
       ptr->line = val;
 
@@ -64,10 +64,16 @@ void make_llines(ILines_Callback &cb, ...)
    cb(head);
 }
 
-const llines* print_lines(const llines *ll, const pl_info &pli)
+std::ostream &default_streamer(std::ostream &os, const LLines &ll)
 {
-   const llines *ptr = ll;
-   const llines *rval = nullptr;
+   os << ll.line;
+   return os;
+}
+
+const LLines* print_lines(const LLines *ll, const pl_info &pli, LL_Streamer pstreamer)
+{
+   const LLines *ptr = ll;
+   const LLines *rval = nullptr;
 
    int count = 0;
    while (ptr && count<pli.max_to_print)
@@ -82,7 +88,8 @@ const llines* print_lines(const llines *ll, const pl_info &pli)
             rval = ptr;
          }
 
-         std::cout << ptr->line << std::endl;
+         (*pstreamer)(std::cout, *ptr) << std::endl;
+         // std::cout << (*pstreamer)(*ptr, std::cout) << std::endl;
 
          if (ptr->position==pli.highlight)
             std::cout << HL_OFF;
