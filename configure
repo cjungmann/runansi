@@ -21,7 +21,7 @@ ratest: ratest.cpp librunansi.so.0.1
 sqltest: sqltest.cpp librunansi.so.0.1
 	$(CXX) $(COMPILE_FLAGS) -L. -o sqltest sqltest.cpp -lmysqlcb -Wl,-R -Wl,. -lrunansi
 
-librunansi.so.0.1 : runansi.o llines.o
+librunansi.so.0.1 : runansi.o llines.o runansi.hpp runansi_llines.hpp
 	$(CXX) -shared -o librunansi.so.0.1 runansi.o llines.o
 	ln -sf librunansi.so.0.1 librunansi.so
 
