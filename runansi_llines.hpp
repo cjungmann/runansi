@@ -1,5 +1,9 @@
-#ifndef LLINES_HPP_SOURCE
-#define LLINES_HPP_SOURCE
+#ifndef RUNANSI_LLINES_HPP_SOURCE
+#define RUNANSI_LLINES_HPP_SOURCE
+
+#include <stdarg.h>
+#include <assert.h>
+#include <string.h>  // for memset
 
 struct llines
 {
@@ -7,6 +11,8 @@ struct llines
    const char *line;
    int        position;
 };
+
+inline void init(llines *ll) { memset(ll, 0, sizeof(llines)); }
 
 // Interface for callback using llines
 class ILines_Callback
@@ -23,8 +29,8 @@ class Lines_User : public ILines_Callback
 protected:
    Func &m_f;
 public:
-   Lines_User(Func f) : m_f(f)   { }
-   virtual ~Lines_User()         { }
+   Lines_User(Func &f) : m_f(f) { }
+   virtual ~Lines_User()        { }
    virtual void operator()(const llines *ll) const { m_f(ll); }
 };
 
@@ -61,8 +67,10 @@ struct pl_info
 
 void init(pl_info &pli, const llines *ll, int sum_top_bottom_margins);
 
+typedef std::ostream& (*LL_Streamer)(std::ostream &os, const llines &ll);
+
 /** Returns highlighted line. **/
-const llines* print_lines(const llines *ll, const pl_info *pli = nullptr);
+const llines* print_lines(const llines *ll, const pl_info &pli);
 
 
 #endif

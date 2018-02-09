@@ -3,7 +3,6 @@
 #include <unistd.h>   // for tcgetattr()
 #include <iostream>
 #include "runansi.hpp"
-#include "llines.hpp"
 
 // Global screen size variable to avoid unnecessary screen size checks
 // for each screen replot.
@@ -221,7 +220,7 @@ const llines *select_line(const llines *ll, int highlight)
       std::cout << std::endl << std::endl;
       std::cout << "Use arrow keys to move highlight, ENTER to select highlighted line.\n\n";
 
-      selected = print_lines(ll, &pli);
+      selected = print_lines(ll, pli);
 
       // Using local buffer to preserve keypress after later get_keyp():
       ptr = get_keyp(buff, 10);
