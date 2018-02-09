@@ -3,20 +3,23 @@
 
 output=Makefile
 
->${output}
+echo "MYSQL_COMPILE=$(mysql_config --cflags)" > ${output}
 
 (cat << 'EOF'
-COMPILE_FLAGS=-fPIC -std=c++11 -Wall -Werror -Weffc++ -pedantic -ggdb -D _DEBUG
+COMPILE_FLAGS=-fPIC -std=c++11 -Wall -Werror -Weffc++ -pedantic -ggdb $(MYSQL_COMPILE) -D _DEBUG
 CXX = g++
 
 ifndef PREFIX
 	PREFIX := /usr/local
 endif
 
-all: librunansi.so.0.1 ratest
+all: librunansi.so.0.1 ratest sqltest
 
 ratest: ratest.cpp librunansi.so.0.1
 	$(CXX) $(COMPILE_FLAGS) -L. -o ratest ratest.cpp -Wl,-R -Wl,. -lrunansi
+
+sqltest: sqltest.cpp librunansi.so.0.1
+	$(CXX) $(COMPILE_FLAGS) -L. -o sqltest sqltest.cpp -lmysqlcb -Wl,-R -Wl,. -lrunansi
 
 librunansi.so.0.1 : runansi.o llines.o
 	$(CXX) -shared -o librunansi.so.0.1 runansi.o llines.o
@@ -25,7 +28,7 @@ librunansi.so.0.1 : runansi.o llines.o
 runansi.o: runansi.cpp runansi.hpp
 	$(CXX) $(COMPILE_FLAGS) -c -o runansi.o runansi.cpp
 
-llines.o: llines.cpp llines.hpp
+llines.o: llines.cpp runansi_llines.hpp
 	$(CXX) $(COMPILE_FLAGS) -c -o llines.o llines.cpp
 
 install:
@@ -38,7 +41,9 @@ install:
 	ldconfig $(PREFIX)
 
 uninstall:
-	delete -f $(PREFIX)/lib/librunansi.so*
+	rm -f $(PREFIX)/lib/librunansi.so*
+	rm -f $(PREFIX)/include/mysqlcb_binder.hpp
+	rm -f $(PREFIX)/include/mysqlcb.hpp
 
 clean:
 	rm -f *.o librunansi.so*
