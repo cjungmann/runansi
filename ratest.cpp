@@ -6,15 +6,18 @@ int main(int argc, char **argv)
 {
    auto f = [](const LLines *ll)
    {
-      const LLines *llsel = select_line(ll,2);
+      const LLines *llsel = select_line(ll,2, LLines_String_streamer);
       if (llsel)
-         std::cout << "\n\nYou selected \"" << llsel->line << "\"\n";
+      {
+         std::cout << "\n\nYou selected \"";
+         LLines_String_streamer(std::cout,*llsel) << "\"\n";
+      }
    };
    Lines_User<decltype(f)> lu(f);
 
    start_resize_handler();
 
-   make_LLines(lu,
+   make_String_LLines(lu,
                "This is the first line",
                "This is the second line",
                "This is the third line",
