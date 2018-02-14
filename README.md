@@ -36,3 +36,22 @@ state as a starting point.
 - The message for the printed lines should handle custom messages at the
   top and bottom of the line list.  The current default was included mainly to
   work on scrolling lists too long to fit on the screen.
+
+- Prepare an option to read the lines from a file.
+  - File-based lines would be pre-packaged interactions.
+  - Along with the file, perhaps a line that begins with a value in
+    magic braces could be saved as an additional field in a new LLines
+    object...for example
+    ~~~txt
+    <[1]> Jump in the lake
+    <[2]> Get lost
+    <[3]> Take a vacation
+    ~~~
+
+    ~~~cpp
+    // Add a value member to LLines to save the value in <[]>:
+    struct LLines_Value : public LLines
+    {
+       char *value;
+    };
+    ~~~
