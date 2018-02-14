@@ -76,7 +76,7 @@ struct pl_info
    int max_to_print;
 };
 
-void init(pl_info &pli, const LLines *ll, int sum_top_bottom_margins);
+void init(pl_info &pli, const LLines *ll, int highlight, int sum_top_bottom_margins);
 
 
 std::ostream &default_streamer(std::ostream &os, const LLines &ll);

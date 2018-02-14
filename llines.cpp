@@ -23,12 +23,12 @@ int count_lines(const LLines *ll)
    return 0;
 }
 
-void init(pl_info &pli, const LLines *ll, int sum_top_bottom_margins=0)
+void init(pl_info &pli, const LLines *ll, int highlight, int sum_top_bottom_margins=0)
 {
    pli.lines_in_list = count_lines(ll);
    pli.sum_top_bottom_margins=sum_top_bottom_margins;
    pli.top_to_print = 1;
-   pli.highlight = 1;
+   pli.highlight = highlight;
    pli.max_to_print = 0;   // should be calculated each time in case the screen size has changed
 }
 

@@ -205,7 +205,7 @@ bool adjust_pl_info(pl_info &pli, const char *keyp)
 const LLines *select_line(const LLines *ll, int highlight, LL_Streamer streamer)
 {
    pl_info pli;
-   init(pli, ll, 8);
+   init(pli, ll, highlight, 8);
    adjust_pli_to_screen(pli);
 
    const LLines *selected = nullptr;
