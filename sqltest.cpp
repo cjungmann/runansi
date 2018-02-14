@@ -145,11 +145,13 @@ void show_table_names(MYSQL &mysql, const char *dbase_name)
       {
          auto flines = [&pp, &dbase_name](const LLines *ll)
          {
+            int selection = 1;
             while (true)
             {
-               const LLines *selected_line = select_line(ll, 1);
+               const LLines *selected_line = select_line(ll, selection);
                if (selected_line)
                {
+                  selection = selected_line->position;
                   const char *table_name = selected_line->line;
                   show_columns(pp, dbase_name, table_name);
                }
@@ -178,11 +180,13 @@ void show_database_names(MYSQL &mysql)
       {
          auto flines = [&pp](const LLines *ll)
          {
+            int selection = 1;
             while (true)
             {
-               const LLines *selected_line = select_line(ll, 1);
+               const LLines *selected_line = select_line(ll, selection);
                if (selected_line)
                {
+                  selection = selected_line->position;
                   const char *dbase_name = selected_line->line;
                   show_table_names(pp, dbase_name);
                }
