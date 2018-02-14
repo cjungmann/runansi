@@ -202,7 +202,7 @@ bool adjust_pl_info(pl_info &pli, const char *keyp)
  * The function returns a pointer to the selected line when ENTER is pressed,
  * or nullptr if ESCAPE is pressed.
  */
-const LLines *select_line(const LLines *ll, int highlight)
+const LLines *select_line(const LLines *ll, int highlight, LL_Streamer streamer)
 {
    pl_info pli;
    init(pli, ll, 8);
@@ -220,7 +220,7 @@ const LLines *select_line(const LLines *ll, int highlight)
       std::cout << std::endl << std::endl;
       std::cout << "Use arrow keys to move highlight, ENTER to select highlighted line.\n\n";
 
-      selected = print_lines(ll, pli);
+      selected = print_lines(ll, pli, streamer);
 
       // Using local buffer to preserve keypress after later get_keyp():
       ptr = get_keyp(buff, 10);

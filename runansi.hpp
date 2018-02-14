@@ -37,7 +37,7 @@ void adjust_pli_to_screen(pl_info &pli);
 bool adjust_pl_info(pl_info &pli, const char *keyp);
 
 const char *get_keyp(char *buff=nullptr, int buffen=0);
-const LLines *select_line(const LLines *ll, int highlight);
+const LLines *select_line(const LLines *ll, int highlight, LL_Streamer streamer=LLines_String_streamer);
 
 
 
