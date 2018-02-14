@@ -32,7 +32,7 @@ void init(pl_info &pli, const LLines *ll, int sum_top_bottom_margins=0)
    pli.max_to_print = 0;   // should be calculated each time in case the screen size has changed
 }
 
-void make_LLines(ILines_Callback &cb, ...)
+void make_String_LLines(ILines_Callback &cb, ...)
 {
    LLines *head=nullptr, *tail=nullptr;
 
@@ -62,12 +62,6 @@ void make_LLines(ILines_Callback &cb, ...)
    va_end(clines);
 
    cb(head);
-}
-
-std::ostream &default_streamer(std::ostream &os, const LLines &ll)
-{
-   os << ll.line;
-   return os;
 }
 
 const LLines* print_lines(const LLines *ll, const pl_info &pli, LL_Streamer pstreamer)

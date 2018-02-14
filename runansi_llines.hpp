@@ -8,11 +8,22 @@
 struct LLines
 {
    LLines     *next;
-   const char *line;
    int        position;
+   const char *line;
 };
 
-inline void init(LLines *ll) { memset(ll, 0, sizeof(LLines)); }
+struct LLines_Extra : public LLines
+{
+   LLines_Extra *extra;
+};
+
+typedef std::ostream& (*LL_Streamer)(std::ostream &os, const LLines &ll);
+
+inline std::ostream &LLines_String_streamer(std::ostream &os, const LLines &ll)
+{
+   os << static_cast<const LLines*>(&ll)->line;
+   return os;
+}
 
 // Interface for callback using LLines
 class ILines_Callback
@@ -52,7 +63,7 @@ int count_lines(const LLines *);
  * make_LLines(lu, "first", "second", "third", nullptr);
  * ~~~
  */
-void make_LLines(ILines_Callback &cb, ...);
+void make_String_LLines(ILines_Callback &cb, ...);
 
 
 /** Print Lines (pl) Info **/
@@ -67,7 +78,6 @@ struct pl_info
 
 void init(pl_info &pli, const LLines *ll, int sum_top_bottom_margins);
 
-typedef std::ostream& (*LL_Streamer)(std::ostream &os, const LLines &ll);
 
 std::ostream &default_streamer(std::ostream &os, const LLines &ll);
 
